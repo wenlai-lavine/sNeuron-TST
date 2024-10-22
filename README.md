@@ -41,7 +41,7 @@ python identify.py
 ```
 + Remove intersection for each neurons
 ```
-python Analysis/inter_motivation/select_neurons.py
+python Analysis/select_neurons.py
 ```
 
 + Generate with Dola

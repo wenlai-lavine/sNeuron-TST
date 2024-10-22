@@ -9,30 +9,8 @@ from vllm import LLM, SamplingParams
 import torch.nn.functional as F
 from types import MethodType
 
-from dola import DoLa
+from contra_neurons import Con_Neu
 
-
-import ptvsd 
-ptvsd.enable_attach(address =('0.0.0.0',5678))
-ptvsd.wait_for_attach()
-
-
-"""
-Implement our methods:
-+ 首先去除相反 style 的干扰，我们可以获得一个logits，
-+ 在利用选取的层进行 dola
-"""
-
-""" 
-nohup python code/Our/generate_dola.py \
--m meta-llama/Llama-2-7b-hf \
--a /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/our_nerons/30000 \
--d /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/data \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/our_gen_dola/30000 \
-> log.txt &
-
-
-"""
 
 PROMPT_DICT = {
     "prompt_input": (
@@ -89,7 +67,7 @@ def load_dataset(data_path, style, style_name):
 
 
 def main(args):
-    llm = DoLa(model_name=args.model, device="cuda", num_gpus=1, max_gpu_memory=27)
+    llm = Con_Neu(model_name=args.model, device="cuda", num_gpus=1, max_gpu_memory=27)
     
     is_llama = bool(args.model.lower().find("llama") >= 0)
     
@@ -129,8 +107,9 @@ def main(args):
         'Yelp': ['positive', 'negative']
     }
     
-    mask_activation = torch.load(f"{args.activation_mask}/{args.style}.{args.mask_style_name}.llama-8b")
+    activation_masks = torch.load(f"{args.activation_mask}/{args.style}.llama-7b")
     
+    mask_activation = activation_masks[style_dict[args.style].index(args.mask_style_name)]
 
     for i, mask_act in enumerate(mask_activation):
         if is_llama:
@@ -142,37 +121,16 @@ def main(args):
     print(f"start to process the dataset: {args.style_name} ---mask style {args.mask_style_name} ... ...")
     print('load dataset ... ...')
     
-    # 计算top-k个neurons的层 （k=5）
-    neurons_num_list = []
-    for ac in mask_activation:
-        neurons_num_list.append(ac.shape[-1])
-    
-    largest_n_values = heapq.nlargest(args.threshold, neurons_num_list)
-    early_exit_layers = [neurons_num_list.index(val) + 1 for val in largest_n_values]
-    if 0 not in early_exit_layers:
-        early_exit_layers.append(0)
-    if 32 not in early_exit_layers:
-        early_exit_layers.append(32)
-    early_exit_layers.sort()
-    
-    # early_exit_layers = list(range(33))
-                    
-    mode = "dola"
-    mature_layer = early_exit_layers[-1]
-    premature_layer = None
-    candidate_premature_layers = early_exit_layers[:-1]
+    mode = "Con_Neu"
     if args.repetition_penalty is None:
         args.repetition_penalty = 1.2
     
-    # datasets, orig_datasets = load_dataset(os.path.join(args.data_path, args.style, f'test.{args.style_name}.txt'), args.style, args.style_name)
-    input_text = "I like the movie."
-    datasets = [PROMPT_DICT['prompt_no_input'].format(instruction=prompt_dict[args.style][args.style_name].format(text=input_text.strip()))]
-    orig_datasets = [input_text]
+    datasets, orig_datasets = load_dataset(os.path.join(args.data_path, args.style, f'test.{args.style_name}.txt'), args.style, args.style_name)
     
     outputs = []
     
     for sample in tqdm(datasets):
-        generate_kwargs = dict(max_new_tokens=args.max_new_tokens, do_sample=args.do_sample, top_p=args.top_p, top_k=args.top_k, temperature=args.temperature, repetition_penalty=args.repetition_penalty, mode=mode, mature_layer=mature_layer, premature_layer=premature_layer, candidate_premature_layers=candidate_premature_layers, relative_top=args.relative_top)
+        generate_kwargs = dict(max_new_tokens=args.max_new_tokens, do_sample=args.do_sample, top_p=args.top_p, top_k=args.top_k, temperature=args.temperature, repetition_penalty=args.repetition_penalty, mode=mode, relative_top=args.relative_top)
         model_completion, _ = llm.generate(sample, **generate_kwargs)
         
         final_output = model_completion.replace('\n', '', 5)
@@ -188,8 +146,8 @@ def main(args):
                 
             }
             f.writelines(json.dumps(out, ensure_ascii=False) + "\n")
-            f.flush()
-    
+            f.flush()           
+                
    
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -200,7 +158,7 @@ if __name__ == "__main__":
     parser.add_argument("--style", type=str, default="")
     parser.add_argument("--style_name", type=str, default="")
     parser.add_argument("--mask_style_name", type=str, default="")
-    parser.add_argument("--threshold", type=int, default=5)
+    
     ## dola setting
     parser.add_argument("--early-exit-layers", type=str, default="-1")
     parser.add_argument("--parallel", action="store_true")

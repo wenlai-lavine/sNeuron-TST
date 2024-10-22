@@ -4,41 +4,6 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 import torch
 
 
-""" 
-parser.add_argument("-d", "--data_path", type=str, default="")
-parser.add_argument("-o", "--out_path", type=str, default="")
-parser.add_argument("-b", "--batch_size", type=str, default="")
-parser.add_argument("-mp", "--model_path", type=str, default="")
-parser.add_argument("-tp", "--tokenizer_path", type=str, default="")
-
-
-python code/Evaluation/mean_bleurt/eval_bleurt.py \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/zero_shot/llama-3-8b \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/bleurt/llama_8b/zero_shot \
--b zero_shot
-
-python code/Evaluation/mean_bleurt/eval_bleurt.py \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/LAPE/llama-3-8b \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/bleurt/llama_8b/LAPE \
--b LAPE
-
-python code/Evaluation/mean_bleurt/eval_bleurt.py \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/LAVE/llama-3-8b \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/bleurt/llama_8b/LAVE \
--b LAVE
-
-python code/Evaluation/mean_bleurt/eval_bleurt.py \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/our_dola/thres_5 \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/bleurt/llama_8b/our_dola \
--b our
-
-"""
-
-# import ptvsd 
-# ptvsd.enable_attach(address =('0.0.0.0',5678))
-# ptvsd.wait_for_attach()
-
-
 def compute_cosine(pred, gold, model):
     sentences = [pred, gold]
     embeddings = model.encode(sentences, convert_to_tensor=True)
@@ -56,7 +21,6 @@ def clean_text(txt, style):
             break
     if patten_str:
         txt = txt.split(patten_str)[1]
-    ## 去掉```
     txt.replace('```', '', 5)
     txt.replace('\\', '', 5)
     

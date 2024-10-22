@@ -3,64 +3,6 @@ import subprocess
 import os
 import time
 
-"""
-nohup python code/Evaluation/cls/run_cls.py \
--b zero_shot \
--p /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/cls \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/zero_shot/llama-3-8b \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/cls/llama_8b/zero_shot \
-> log_zero_shot_cls.txt &
-
-nohup python code/Evaluation/cls/run_cls.py \
--b LAPE \
--p /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/cls \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/LAPE/llama-3-8b \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/cls/llama_8b/LAPE \
-> log_LAPE_cls.txt &
-
-nohup python code/Evaluation/cls/run_cls.py \
--b LAVE \
--p /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/cls \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/LAVE/llama-3-8b \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/cls/llama_8b/LAVE \
-> log_LAVE_cls.txt &
-
-nohup python code/Evaluation/cls/run_cls.py \
--b our \
--p /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/cls \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/gen_deact/llama-3-8b/5000 \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/cls/llama_8b/our_deact/5000 \
-> log_50000.txt &
-
-nohup python code/Evaluation/cls/run_cls.py \
--b our \
--p /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/cls \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/our_dola/thres_8 \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/cls/llama_8b/our_dola/thres_8 \
-> /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/cls/llama_8b/our_dola/thres_8/log.txt &
-
-
-python code/Evaluation/cls/run_cls.py \
--b our \
--p /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/cls \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/Analysis/inter_motivation/non_inter_res \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/Analysis/inter_motivation/eval/non_inter/cls \
-> /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/cls/llama_8b/our_dola/thres_8/log.txt &
-
-python code/Evaluation/cls/run_cls.py \
--b our \
--p /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/cls \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/Analysis/inter_motivation/task_res \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/Analysis/inter_motivation/eval/task/cls
-
-python code/Evaluation/cls/run_cls.py \
--b our \
--p /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/cls \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/our_dola_min/thres_5 \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/cls/llama_8b/our_dola_min/thres_5
-
-
-"""
 
 def main(args):
     style_list = ['GYAFC', 'ParaDetox', 'Politics', 'Politness', 'Shakespeare', 'Yelp']

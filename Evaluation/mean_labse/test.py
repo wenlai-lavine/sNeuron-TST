@@ -1,9 +1,4 @@
 from sentence_transformers import SentenceTransformer, util
-import torch
-
-#import ptvsd
-#ptvsd.enable_attach(address =('0.0.0.0',5678))
-#ptvsd.wait_for_attach()
 
 sentences = ["I like this movie.", "I don't like this movie."] # 0.8435
 sentences = ["I like this movie.", "I don't enjoy this film."] # 0.7891

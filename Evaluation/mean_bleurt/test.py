@@ -1,10 +1,6 @@
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 import torch
 
-import ptvsd
-ptvsd.enable_attach(address =('0.0.0.0',5678))
-ptvsd.wait_for_attach()
-
 tokenizer = AutoTokenizer.from_pretrained("Elron/bleurt-large-512")
 model = AutoModelForSequenceClassification.from_pretrained("Elron/bleurt-large-512")
 model.eval()

@@ -3,68 +3,6 @@ import argparse, os, json
 from content_similarity import wieting_sim
 
 
-""" 
-parser.add_argument("-d", "--data_path", type=str, default="")
-parser.add_argument("-o", "--out_path", type=str, default="")
-parser.add_argument("-b", "--batch_size", type=str, default="")
-parser.add_argument("-mp", "--model_path", type=str, default="")
-parser.add_argument("-tp", "--tokenizer_path", type=str, default="")
-
-python code/Evaluation/sim/sim_eval.py \
--d /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Baseline/zero-shot/output/llama-7b \
--o /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/output_sim/zero-shot \
--b 8 \
--mp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.pt \
--tp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.sp.30k.model
-
-
-python code/Evaluation/sim/sim_eval.py \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/zero_shot/llama-3-8b \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/sim/llama_8b/zero_shot \
--b zero_shot \
--bs 8 \
--mp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.pt \
--tp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.sp.30k.model
-
-python code/Evaluation/sim/sim_eval.py \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/LAPE/llama-3-8b \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/sim/llama_8b/LAPE \
--b LAPE \
--bs 8 \
--mp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.pt \
--tp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.sp.30k.model
-
-python code/Evaluation/sim/sim_eval.py \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/LAVE/llama-3-8b \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/sim/llama_8b/LAVE \
--b LAVE \
--bs 8 \
--mp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.pt \
--tp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.sp.30k.model
-
-python code/Evaluation/sim/sim_eval.py \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/gen_deact/llama-3-8b/50000 \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/sim/llama_8b/our_deact/50000 \
--b our \
--bs 8 \
--mp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.pt \
--tp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.sp.30k.model
-
-python code/Evaluation/sim/sim_eval.py \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/our_dola/thres_5 \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/evaluation/sim/llama_8b/our_dola/thres_5 \
--b our \
--bs 8 \
--mp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.pt \
--tp /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/sim/model/sim.sp.30k.model
-
-
-"""
-
-# import ptvsd 
-# ptvsd.enable_attach(address =('0.0.0.0',5678))
-# ptvsd.wait_for_attach()
-
 def main(args):
     style_list = ['GYAFC', 'ParaDetox', 'Politics', 'Politness', 'Shakespeare', 'Yelp']
     style_dict = {

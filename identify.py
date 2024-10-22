@@ -3,14 +3,6 @@ import torch
 from tqdm import tqdm
 import os
 
-""" 
-python code/Our/identify_new.py \
--t 2000 \
--ap /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Baseline/LAPE/output/activation \
--tap /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/LAPE/prompt_activation \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/our_nerons/2000
-"""
-
 
 def main(args):
     style_list = ['GYAFC', 'ParaDetox', 'Politics', 'Politness', 'Shakespeare', 'Yelp']

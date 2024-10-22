@@ -94,14 +94,6 @@ class DoLa:
             # gen_arr_list = gen_arr.tolist()
 
             output_str = self.tokenizer.decode(gen_sequences, skip_special_tokens=True)
-            ## comment them after get the results
-            # if verbose:
-            #     out_tmp_path = "/dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/llama-3/gen_res/test/dis_each_layer.csv"
-            #     out_f = open(out_tmp_path, 'w', encoding='utf-8')
-            #     out_f.write(f"token,distance\n")
-            #     for gen_tok, dist in zip(gen_arr_list, total_distance_list):
-            #         out_f.writelines(f"{self.tokenizer.decode(gen_tok)},{str(dist)}\n")
-            #     out_f.flush()
                     
             if verbose:
                 print('MODEL OUTPUT: \n{0}'.format(output_str))

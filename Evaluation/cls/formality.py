@@ -4,48 +4,6 @@ import tqdm, argparse, os, json
 import torch
 
 
-""" 
-python code/Evaluation/cls/formality.py \
--m SkolkovoInstitute/xlmr_formality_classifier \
--d /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Baseline/zero-shot/output/llama-7b \
--o /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/output/zero-shot
-
-python code/Evaluation/cls/formality.py \
--m SkolkovoInstitute/xlmr_formality_classifier \
--b LAPE \
--d /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Baseline/LAPE/output/generate_res \
--o /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/output_cls/LAPE
-
-python code/Evaluation/cls/formality.py \
--m SkolkovoInstitute/xlmr_formality_classifier \
--b LAVE \
--d /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Baseline/LAVE/output/generate_res \
--o /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/output_cls/LAVE
-
-python code/Evaluation/cls/formality.py \
--m SkolkovoInstitute/xlmr_formality_classifier \
--b our \
--d /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Our/output/gen_res_40000 \
--o /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/output_cls/our_40000
-
-python code/Evaluation/cls/formality.py \
--m SkolkovoInstitute/xlmr_formality_classifier \
--b our \
--d /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Our/output/gen_dola_layer_30000 \
--o /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/output_cls/our_dola_layer_30000
-
-python code/Evaluation/cls/formality.py \
--m SkolkovoInstitute/xlmr_formality_classifier \
--b our \
--d /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/our_gen_con_neu/30000 \
--o /dss/dssfs04/lwp-dss-0002/pn25ho/pn25ho-dss-0001/lavine/output/evaluation/cls/30000
-
-"""
-
-# import ptvsd 
-# ptvsd.enable_attach(address =('0.0.0.0',5678))
-# ptvsd.wait_for_attach()
-
 def clean_text(txt, style):
     patten_list = ['should be rephrased as', 'as follows:', f'{style} style sentence']
     txt = txt.split('\n\n')[0]

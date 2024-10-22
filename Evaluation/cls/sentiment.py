@@ -4,18 +4,6 @@ import argparse, os, json
 import torch
 
 
-""" 
-python code/Evaluation/cls/sentiment.py \
--m distilbert-base-uncased-finetuned-sst-2-english \
--b our \
--d /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Our/output/gen_res_40000 \
--o /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/output_cls/our_40000
-"""
-
-# import ptvsd 
-# ptvsd.enable_attach(address =('0.0.0.0',5678))
-# ptvsd.wait_for_attach()
-
 def clean_text(txt, style):
     patten_list = ['should be rephrased as', 'as follows:', f'{style} style sentence']
     txt = txt.split('\n\n')[0]
@@ -27,7 +15,6 @@ def clean_text(txt, style):
             break
     if patten_str:
         txt = txt.split(patten_str)[1]
-    ## 去掉```
     txt.replace('```', '', 5)
     txt.replace('\\', '', 5)
     

@@ -4,26 +4,6 @@ import argparse, os, json
 import torch
 
 
-""" 
-python code/Evaluation/cls/authorship.py \
--m notaphoenix/shakespeare_classifier_model \
--b LAVE \
--d /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Baseline/LAVE/output/generate_res \
--o /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/output_cls/LAVE
-
-python code/Evaluation/cls/authorship.py \
--m notaphoenix/shakespeare_classifier_model \
--b our \
--d /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Our/output/gen_res_40000 \
--o /dss/dssmcmlfs01/pn25pu/pn25pu-dss-0000/lavine/lavine_code/TST/code/Evaluation/output_cls/our_40000
-
-
-"""
-
-# import ptvsd 
-# ptvsd.enable_attach(address =('0.0.0.0',5678))
-# ptvsd.wait_for_attach()
-
 def clean_text(txt, style):
     patten_list = ['should be rephrased as', 'as follows:', f'{style} style sentence']
     txt = txt.split('\n\n')[0]
