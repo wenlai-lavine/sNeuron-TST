@@ -1,4 +1,4 @@
-# **Bi-ACL**
+# **sNeuron-TST**
 
 Code implements for paper **[Style-Specific Neurons for Steering LLMs in Text Style Transfer](http://arxiv.org/abs/2410.00593)** published in EMNLP 2024 main conference.
 The neuron identification processes are based on public code : [Language-Specific-Neurons](https://github.com/RUCAIBox/Language-Specific-Neurons)
