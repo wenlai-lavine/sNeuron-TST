@@ -3,7 +3,6 @@ import torch
 from tqdm import tqdm
 import os
 
-
 def main(args):
     style_list = ['GYAFC', 'ParaDetox', 'Politics', 'Politness', 'Shakespeare', 'Yelp']
     style_dict = {
@@ -32,22 +31,13 @@ def main(args):
         ## activation
         positive_activation = torch.load(f"{args.activation_path}/activation.{style}.{positive_style}.train.llama-7b")
         negative_activation = torch.load(f"{args.activation_path}/activation.{style}.{negative_style}.train.llama-7b")
-        positive_task_activation = torch.load(f"{args.task_activation_path}/activation.{style}.{positive_style}.train.llama-7b")
-        negative_task_activation = torch.load(f"{args.task_activation_path}/activation.{style}.{positive_style}.train.llama-7b")
         
         num_layers, intermediate_size = positive_activation['over_zero'].size()
         
         ## 1. positive neurons
         positive_negative_difference = positive_activation['over_zero'] - negative_activation['over_zero']
         positive_negative_difference_sorted = torch.topk(positive_negative_difference.view(-1), args.threshold)
-        positive_negative_difference_sorted_indices = positive_negative_difference_sorted.indices.tolist()
-        
-        ## 2. postive-> negative task neurons
-        positivve_negative_task_difference = positive_task_activation['over_zero'] - positive_activation['over_zero']
-        positivve_negative_task_difference_sorted = torch.topk(positivve_negative_task_difference.view(-1), args.threshold)
-        positivve_negative_task_difference_sorted_indices = positivve_negative_task_difference_sorted.indices.tolist()
-
-        positive_neurons = list(set(positive_negative_difference_sorted_indices).intersection(positivve_negative_task_difference_sorted_indices))
+        positive_neurons = positive_negative_difference_sorted.indices.tolist()
         
         final_positive_neurons_list = [[] for _ in range(num_layers)]
         for pn in positive_neurons:
@@ -63,6 +53,7 @@ def main(args):
             else:
                 final_positive_neurons.append(torch.tensor(fpn).long())
         
+        # torch.save(final_positive_neurons, f"{args.out_path}/{style}.{positive_style}.llama-7b")
         
         total_neurons_list.append(final_positive_neurons)
         
@@ -71,14 +62,7 @@ def main(args):
         ## 2. negative neurons
         negative_positive_difference = negative_activation['over_zero'] - positive_activation['over_zero']
         negative_positive_difference_sorted = torch.topk(negative_positive_difference.view(-1), args.threshold)
-        negative_positive_difference_sorted_indices = negative_positive_difference_sorted.indices.tolist()
-        
-        ## 2. negative-> positive task neurons
-        negative_positivve_task_difference = negative_task_activation['over_zero'] - negative_activation['over_zero']
-        negative_positivve_task_difference_sorted = torch.topk(negative_positivve_task_difference.view(-1), args.threshold)
-        negative_positivve_task_difference_sorted_indices = negative_positivve_task_difference_sorted.indices.tolist()
-
-        negative_neurons = list(set(negative_positive_difference_sorted_indices).intersection(negative_positivve_task_difference_sorted_indices))
+        negative_neurons = negative_positive_difference_sorted.indices.tolist()
         
         final_negative_neurons_list = [[] for _ in range(num_layers)]
         for nn in negative_neurons:
@@ -94,6 +78,7 @@ def main(args):
             else:
                 final_negative_neurons.append(torch.tensor(fnn).long())
         
+        # torch.save(final_negative_neurons, f"{args.out_path}/{style}.{negative_style}.llama-7b")
         
         statistic_out_file.write(f"{style}, {negative_style}, {str(len(negative_neurons))}\n")
         
