@@ -54,11 +54,23 @@ python Our/run_gen_dola.py
 ****
 If you find our paper useful, please kindly cite our paper. Thanks!
 ```bibtex
-@article{lai2024style,
-  title={Style-Specific Neurons for Steering LLMs in Text Style Transfer},
-  author={Lai, Wen and Hangya, Viktor and Fraser, Alexander},
-  journal={arXiv preprint arXiv:2410.00593},
-  year={2024}
+@inproceedings{lai-etal-2024-style,
+    title = "Style-Specific Neurons for Steering {LLM}s in Text Style Transfer",
+    author = "Lai, Wen  and
+      Hangya, Viktor  and
+      Fraser, Alexander",
+    editor = "Al-Onaizan, Yaser  and
+      Bansal, Mohit  and
+      Chen, Yun-Nung",
+    booktitle = "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2024",
+    address = "Miami, Florida, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.emnlp-main.745",
+    doi = "10.18653/v1/2024.emnlp-main.745",
+    pages = "13427--13443",
+    abstract = "Text style transfer (TST) aims to modify the style of a text without altering its original meaning. Large language models (LLMs) demonstrate superior performance across multiple tasks, including TST. However, in zero-shot setups, they tend to directly copy a significant portion of the input text to the output without effectively changing its style. To enhance the stylistic variety and fluency of the text, we present sNeuron-TST, a novel approach for steering LLMs using style-specific neurons in TST. Specifically, we identify neurons associated with the source and target styles and deactivate source-style-only neurons to give target-style words a higher probability, aiming to enhance the stylistic diversity of the generated text. However, we find that this deactivation negatively impacts the fluency of the generated text, which we address by proposing an improved contrastive decoding method that accounts for rapid token probability shifts across layers caused by deactivated source-style neurons. Empirical experiments demonstrate the effectiveness of the proposed method on six benchmarks, encompassing formality, toxicity, politics, politeness, authorship, and sentiment.",
 }
 ```
    
